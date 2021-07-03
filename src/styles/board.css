@@ -1,0 +1,12 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 150px);
+  border: 1px solid black;
+  width: 450px;
+}
