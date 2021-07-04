@@ -1,8 +1,11 @@
-import React from "react";
-import Cell from "./cell.js";
+import React, { useEffect } from "react";
+import Cell from "./Cell.js";
 import "../styles/square.css";
 
-const square = () => {
+const Square = () => {
+  useEffect(() => {
+    console.log();
+  }, []);
   return (
     <form className="square-grid">
       <Cell></Cell>
@@ -18,4 +21,4 @@ const square = () => {
   );
 };
 
-export default square;
+export default Square;

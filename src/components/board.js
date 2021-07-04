@@ -1,8 +1,8 @@
 import React from "react";
-import Square from "./square.js";
+import Square from "./Square.js";
 import "../styles/board.css";
 
-const board = () => {
+const Board = () => {
   return (
     <div className="board-grid">
       <Square></Square>
@@ -18,4 +18,4 @@ const board = () => {
   );
 };
 
-export default board;
+export default Board;

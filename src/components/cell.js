@@ -1,8 +1,8 @@
 import React from "react";
 import "../styles/cell.css";
 
-const cell = () => {
+const Cell = () => {
   return <input className="cell-input"></input>;
 };
 
-export default cell;
+export default Cell;
