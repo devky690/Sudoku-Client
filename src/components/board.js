@@ -32,6 +32,17 @@ const Board = () => {
 };
 
 function checkRows(cell) {
+  checkFirstRow(cell);
+  checkSecondRow(cell);
+  checkThirdRow(cell);
+  checkFourthRow(cell);
+  checkFifthRow(cell);
+  checkSixthRow(cell);
+  checkSeventhRow(cell);
+  checkEigthRow(cell);
+  checkNinthRow(cell);
+}
+function checkFirstRow() {
   const seen = new Set();
   //beginning row 1 check
   let position = cell[0];
@@ -54,9 +65,11 @@ function checkRows(cell) {
     position = position.nextElementSibling;
     console.log(position);
   }
-
+}
+function checkSecondRow(cell) {
+  const seen = new Set();
   //beginning row 2 check
-  position = cell[3];
+  let position = cell[3];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
@@ -76,8 +89,11 @@ function checkRows(cell) {
     position = position.nextElementSibling;
     console.log(position);
   }
+}
+function checkThirdRow(cell) {
+  const seen = new Set();
   //beginning row 3 check
-  position = cell[6];
+  let position = cell[6];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
@@ -97,8 +113,11 @@ function checkRows(cell) {
     position = position.nextElementSibling;
     console.log(position);
   }
+}
+function checkFourthRow(cell) {
+  const seen = new Set();
   //beginning row 4 check
-  position = cell[27];
+  let position = cell[27];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
@@ -118,8 +137,11 @@ function checkRows(cell) {
     position = position.nextElementSibling;
     console.log(position);
   }
+}
+function checkFifthRow(cell) {
+  const seen = new Set();
   //beginning row 5 check
-  position = cell[30];
+  let position = cell[30];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
@@ -139,8 +161,11 @@ function checkRows(cell) {
     position = position.nextElementSibling;
     console.log(position);
   }
+}
+function checkSixthRow(cell) {
+  const seen = new Set();
   //beginning row 6 check
-  position = cell[33];
+  let position = cell[33];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
@@ -160,22 +185,73 @@ function checkRows(cell) {
     position = position.nextElementSibling;
     console.log(position);
   }
+}
+function checkSeventhRow(cell) {
+  const seen = new Set();
   //beginning row 7 check
-  position = cell[33];
+  let position = cell[54];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
     console.log(position);
   }
   //still checking row 7
-  position = cell[42];
+  position = cell[63];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
     console.log(position);
   }
   //still checking row 7
-  position = cell[51];
+  position = cell[72];
+  console.log(position);
+  for (let i = 1; i <= 2; i++) {
+    position = position.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkEigthRow(cell) {
+  const seen = new Set();
+  //beginning row 8 check
+  let position = cell[57];
+  console.log(position);
+  for (let i = 1; i <= 2; i++) {
+    position = position.nextElementSibling;
+    console.log(position);
+  }
+  //still checking row 8
+  position = cell[66];
+  console.log(position);
+  for (let i = 1; i <= 2; i++) {
+    position = position.nextElementSibling;
+    console.log(position);
+  }
+  //still checking row 9
+  position = cell[75];
+  console.log(position);
+  for (let i = 1; i <= 2; i++) {
+    position = position.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkNinthRow(cell) {
+  const seen = new Set();
+  //beginning row 9 check
+  position = cell[60];
+  console.log(position);
+  for (let i = 1; i <= 2; i++) {
+    position = position.nextElementSibling;
+    console.log(position);
+  }
+  //still checking row 9
+  position = cell[69];
+  console.log(position);
+  for (let i = 1; i <= 2; i++) {
+    position = position.nextElementSibling;
+    console.log(position);
+  }
+  //still checking row 9
+  position = cell[78];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
