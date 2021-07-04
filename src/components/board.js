@@ -9,12 +9,29 @@ const Board = () => {
     const cell = document.querySelectorAll(".cell-input");
     console.log(cell);
     console.clear();
-    checkRows(cell);
+    //checkRows(cell);
+    //checkColumns(cell);
+    checkSquares(cell, 0);
     console.log(cell);
   }, []);
+  function checkSquares(cell, index) {
+    if (index >= 80) return;
+    const seen = new Set();
 
-  function checkColumn() {}
-  function checkSquare() {}
+    let position = cell[index];
+    console.log(position);
+    //add first element (its directly above) to seen here
+    for (let count = 2; count <= 9; count++) {
+      position = position.nextElementSibling;
+      if (seen.has(position.value)) {
+        alert("You have an element the same within a square! Change it!");
+        return;
+      }
+      console.log(position);
+      index++;
+    }
+    checkSquares(cell, index + 1);
+  }
 
   return (
     <form className="board-grid">
@@ -31,6 +48,18 @@ const Board = () => {
   );
 };
 
+function checkColumns(cell) {
+  checkFirstColumn(cell);
+  checkSecondColumn(cell);
+  checkThirdColumn(cell);
+  checkFourthColumn(cell);
+  checkFifthColumn(cell);
+  checkSixthColumn(cell);
+  checkSeventhColumn(cell);
+  checkEightColumn(cell);
+  checkNinthColumn(cell);
+}
+
 function checkRows(cell) {
   checkFirstRow(cell);
   checkSecondRow(cell);
@@ -42,7 +71,242 @@ function checkRows(cell) {
   checkEigthRow(cell);
   checkNinthRow(cell);
 }
-function checkFirstRow() {
+function checkFirstColumn(cell) {
+  //first column check
+  let position = cell[0];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[27];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[54];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkSecondColumn(cell) {
+  //first column check
+  let position = cell[1];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[28];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[55];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkThirdColumn(cell) {
+  //first column check
+  let position = cell[2];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[29];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[56];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkFourthColumn(cell) {
+  //first column check
+  let position = cell[9];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[36];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[63];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkFifthColumn(cell) {
+  //first column check
+  let position = cell[10];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[37];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[64];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkSixthColumn(cell) {
+  //first column check
+  let position = cell[11];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[38];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[65];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkSeventhColumn(cell) {
+  //first column check
+  let position = cell[18];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[45];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[72];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkEightColumn(cell) {
+  //first column check
+  let position = cell[19];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[46];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[73];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+function checkNinthColumn(cell) {
+  //first column check
+  let position = cell[20];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[47];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+
+  position = cell[74];
+  console.log(position);
+  for (let i = 3; i <= 6; i += 3) {
+    position =
+      position.nextElementSibling.nextElementSibling.nextElementSibling;
+    console.log(position);
+  }
+}
+
+function checkFirstRow(cell) {
   const seen = new Set();
   //beginning row 1 check
   let position = cell[0];
@@ -237,7 +501,7 @@ function checkEigthRow(cell) {
 function checkNinthRow(cell) {
   const seen = new Set();
   //beginning row 9 check
-  position = cell[60];
+  let position = cell[60];
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     position = position.nextElementSibling;
