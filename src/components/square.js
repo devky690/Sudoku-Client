@@ -3,11 +3,8 @@ import Cell from "./Cell.js";
 import "../styles/square.css";
 
 const Square = () => {
-  useEffect(() => {
-    console.log();
-  }, []);
   return (
-    <form className="square-grid">
+    <div className="square-grid">
       <Cell></Cell>
       <Cell></Cell>
       <Cell></Cell>
@@ -17,7 +14,7 @@ const Square = () => {
       <Cell></Cell>
       <Cell></Cell>
       <Cell></Cell>
-    </form>
+    </div>
   );
 };
 
