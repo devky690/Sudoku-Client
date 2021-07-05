@@ -7,19 +7,17 @@ const Board = () => {
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
-    console.log(cell);
     console.clear();
 
-    //checks first rows
-    checkRowsInSquareRows(cell, 0, 0);
-    //checks second rows
-    checkRowsInSquareRows(cell, 3, 0);
-    //checks third rows
-    checkRowsInSquareRows(cell, 6, 0);
+    const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
+
+    rowStarts.forEach(start => {
+      checkRows(cell, start, 0);
+    });
 
     const colStarts = [0, 1, 2, 9, 10, 11, 18, 19, 20];
     colStarts.forEach(start => {
-      checkColumnsInSquareColumns(cell, start, 0);
+      checkColumns(cell, start, 0);
     });
     console.log(cell);
   }, []);
@@ -58,8 +56,10 @@ function checkSquares(cell, index) {
   checkSquares(cell, index + 1, 0);
 }
 
-//Goes across one column from 3 set of squares (down ONE square column)
-function checkColumnsInSquareColumns(cell, index, count) {
+/*
+  Goes across one column
+*/
+function checkColumns(cell, index, count) {
   if (count == 9) return;
 
   let position = cell[index];
@@ -73,23 +73,14 @@ function checkColumnsInSquareColumns(cell, index, count) {
   }
   count += 3;
 
-  checkColumnsInSquareColumns(cell, index + 21, count);
+  checkColumns(cell, index + 21, count);
 }
 
 /*
-  Goes across (pick one when calling
-  function) - first/second/third rows from 3 different set of 3 squares
-  so this function need only be called 3 times total 
+  Goes across one row
 */
-function checkRowsInSquareRows(cell, index, count) {
-  if (count >= 27) return;
-
-  //this will mean we have gone across a set of 3 squares
-  //(there are 9 squares we go through in this function)
-  if (count % 9 == 0) {
-    //check if we have seen duplicates
-    //then clear the set
-  }
+function checkRows(cell, index, count) {
+  if (count == 9) return;
 
   let position = cell[index];
   console.log(position);
@@ -100,7 +91,7 @@ function checkRowsInSquareRows(cell, index, count) {
   }
   count += 3;
 
-  checkRowsInSquareRows(cell, index + 7, count);
+  checkRows(cell, index + 7, count);
 }
 
 export default Board;
