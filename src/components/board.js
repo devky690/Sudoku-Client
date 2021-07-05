@@ -10,7 +10,6 @@ const Board = () => {
     console.clear();
 
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
-
     rowStarts.forEach(start => {
       checkRows(cell, start, 0);
     });

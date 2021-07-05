@@ -1,5 +1,5 @@
 .square-grid {
   display: grid;
   border: 2px solid black;
-  grid-template-columns: 50px 50px 50px;
+  grid-template-columns: 48px 50px 50px;
 }
