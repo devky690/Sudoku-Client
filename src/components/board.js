@@ -47,13 +47,24 @@ function checkSquares(cell, index) {
   const seen = new Set();
 
   let position = cell[index];
+  if (parseInt(position) === NaN) {
+    console.log("You have an element that isnt a number!");
+  }
+  if (position.value === "") {
+    console.log("You have an empty space!");
+  }
   console.log(position);
   //add first element (its directly above) to seen here
   for (let count = 2; count <= 9; count++) {
     position = position.nextElementSibling;
+    if (parseInt(position) === NaN) {
+      console.log("You have an element that isnt a number!");
+    }
+    if (position.value === "") {
+      console.log("You have an empty space!");
+    }
     if (seen.has(position.value)) {
-      alert("You have an element the same within a square! Change it!");
-      return;
+      console.log("You have an element the same within a square! Change it!");
     }
     console.log(position);
     index++;
@@ -68,11 +79,23 @@ function checkColumns(cell, index, count) {
   if (count == 9) return;
 
   let position = cell[index];
+  if (parseInt(position) === NaN) {
+    console.log("You have an element that isnt a number!");
+  }
+  if (position.value === "") {
+    console.log("You have an empty space!");
+  }
   console.log(position);
   for (let i = 3; i <= 6; i += 3) {
     if (position && position.nextElementSibling)
       position =
         position.nextElementSibling.nextElementSibling.nextElementSibling;
+    if (parseInt(position) === NaN) {
+      console.log("You have an element that isnt a number!");
+    }
+    if (position.value === "") {
+      console.log("You have an empty space!");
+    }
     console.log(position);
     index += 3;
   }
@@ -91,6 +114,12 @@ function checkRows(cell, index, count) {
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     if (position) position = position.nextElementSibling;
+    if (parseInt(position) === NaN) {
+      console.log("You have an element that isnt a number!");
+    }
+    if (position.value === "") {
+      console.log("You have an empty space!");
+    }
     console.log(position);
     index++;
   }
