@@ -3,6 +3,17 @@ import Square from "./Square.js";
 import easyProbOne from "../gamesets/EasySudoku.js";
 import "../styles/board.css";
 
+/*
+TODO:
+1. Create a Modal Component as replacement for alert since alert wont go away easily
+
+2. Along with the modal create a boolean state called showModel since we need
+to create state to have conditional rendering
+
+3. Finish up check functions by adding the logic for duplicates w/hashset which should
+be fairly simple
+*/
+
 const Board = () => {
   useEffect(() => {
     //need to mess around with this to figure out the validation for sudoku
