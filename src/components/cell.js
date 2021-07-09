@@ -7,7 +7,7 @@ const Cell = () => {
   return (
     <input
       className="cell-input"
-      value="1"
+      value=""
       onChange={e => {
         setNum(e.target.value);
       }}

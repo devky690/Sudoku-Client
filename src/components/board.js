@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Square from "./Square.js";
+import easyProbOne from "../gamesets/EasySudoku.js";
 import "../styles/board.css";
 
 const Board = () => {
@@ -10,6 +11,11 @@ const Board = () => {
     console.clear();
 
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
+    let problemRowIndex = 0;
+    rowStarts.forEach(start => {
+      fillInValues(cell, start, 0, 0, problemRowIndex);
+      problemRowIndex++;
+    });
     rowStarts.forEach(start => {
       checkRows(cell, start, 0);
     });
@@ -91,6 +97,39 @@ function checkRows(cell, index, count) {
   count += 3;
 
   checkRows(cell, index + 7, count);
+}
+
+/*
+  Only fills in one row
+*/
+function fillInValues(cell, index, count, problemColumnIndex, problemRowIndex) {
+  if (count == 9) return;
+
+  let position = cell[index];
+  if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
+    position.value = easyProbOne[problemRowIndex][problemColumnIndex];
+    position.disabled = true;
+  } else {
+    position.disabled = false;
+  }
+  problemColumnIndex++;
+  for (let i = 1; i <= 2; i++) {
+    if (position) position = position.nextElementSibling;
+
+    if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
+      position.value = easyProbOne[problemRowIndex][problemColumnIndex];
+      position.disabled = true;
+    } else {
+      position.disabled = false;
+    }
+    problemColumnIndex++;
+    console.log(position);
+    index++;
+  }
+
+  count += 3;
+
+  fillInValues(cell, index + 7, count, problemColumnIndex, problemRowIndex);
 }
 
 export default Board;
