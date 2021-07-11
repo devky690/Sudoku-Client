@@ -11,7 +11,7 @@ TODO:
 to create state to have conditional rendering
 
 3. Finish up check functions by adding the logic for duplicates w/hashset which should
-be fairly simple
+be fairly simple (Done)
 */
 
 const Board = () => {
@@ -21,6 +21,8 @@ const Board = () => {
     const cell = document.querySelectorAll(".cell-input");
     console.clear();
 
+    checkSquares(cell, 0, false, false, false);
+
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
     let problemRowIndex = 0;
     rowStarts.forEach(start => {
@@ -28,12 +30,14 @@ const Board = () => {
       problemRowIndex++;
     });
     rowStarts.forEach(start => {
-      checkRows(cell, start, 0);
+      const seen = new Set();
+      checkRows(cell, start, 0, seen);
     });
 
     const colStarts = [0, 1, 2, 9, 10, 11, 18, 19, 20];
     colStarts.forEach(start => {
-      checkColumns(cell, start, 0);
+      const seen = new Set();
+      checkColumns(cell, start, 0, seen);
     });
     console.log(cell);
   }, []);
@@ -53,90 +57,97 @@ const Board = () => {
   );
 };
 
-function checkSquares(cell, index) {
+function checkSquares(
+  cell,
+  index,
+  checkedNum,
+  checkedEmptySpace,
+  hasSameElement
+) {
   if (index >= 80) return;
-  const seen = new Set();
 
+  const seen = new Set();
   let position = cell[index];
-  if (parseInt(position) === NaN) {
-    console.log("You have an element that isnt a number!");
-  }
-  if (position.value === "") {
-    console.log("You have an empty space!");
-  }
+  seen.add(position.value);
   console.log(position);
   //add first element (its directly above) to seen here
   for (let count = 2; count <= 9; count++) {
     position = position.nextElementSibling;
-    if (parseInt(position) === NaN) {
+    if (seen.has(position.value) && position.value !== "" && !hasSameElement) {
+      console.log("You have a duplicate element within a row");
+      hasSameElement = true;
+    }
+    if (parseInt(position) === NaN && !checkedNum) {
       console.log("You have an element that isnt a number!");
+      checkedNum = true;
     }
-    if (position.value === "") {
+    if (position.value === "" && !checkedEmptySpace) {
       console.log("You have an empty space!");
+      checkedEmptySpace = true;
     }
-    if (seen.has(position.value)) {
-      console.log("You have an element the same within a square! Change it!");
-    }
+    seen.add(position.value);
     console.log(position);
     index++;
   }
-  checkSquares(cell, index + 1, 0);
+  checkSquares(cell, index + 1, checkedNum, checkedEmptySpace, hasSameElement);
 }
 
 /*
   Goes across one column
 */
-function checkColumns(cell, index, count) {
+let colSameElementStatus = false;
+function checkColumns(cell, index, count, seen) {
   if (count == 9) return;
 
   let position = cell[index];
-  if (parseInt(position) === NaN) {
-    console.log("You have an element that isnt a number!");
-  }
-  if (position.value === "") {
-    console.log("You have an empty space!");
-  }
+  seen.add(position.value);
   console.log(position);
   for (let i = 3; i <= 6; i += 3) {
     if (position && position.nextElementSibling)
       position =
         position.nextElementSibling.nextElementSibling.nextElementSibling;
-    if (parseInt(position) === NaN) {
-      console.log("You have an element that isnt a number!");
-    }
-    if (position.value === "") {
-      console.log("You have an empty space!");
+    if (
+      seen.has(position.value) &&
+      !colSameElementStatus &&
+      position.value !== ""
+    ) {
+      console.log("You have a duplicate element within a column");
+      colSameElementStatus = true;
     }
     console.log(position);
     index += 3;
   }
   count += 3;
 
-  checkColumns(cell, index + 21, count);
+  checkColumns(cell, index + 21, count, seen);
 }
 
 /*
   Goes across one row
 */
-function checkRows(cell, index, count) {
+let rowSameElementStatus = false;
+function checkRows(cell, index, count, seen) {
   if (count == 9) return;
 
   let position = cell[index];
+  seen.add(position.value);
   console.log(position);
   for (let i = 1; i <= 2; i++) {
     if (position) position = position.nextElementSibling;
-    if (parseInt(position) === NaN) {
-      console.log("You have an element that isnt a number!");
-    }
-    if (position.value === "") {
-      console.log("You have an empty space!");
+    if (
+      seen.has(position.value) &&
+      position.value !== "" &&
+      !rowSameElementStatus
+    ) {
+      console.log("You have a duplicate element within a row");
+      rowSameElementStatus = true;
     }
     console.log(position);
     index++;
   }
   count += 3;
 
-  checkRows(cell, index + 7, count);
+  checkRows(cell, index + 7, count, seen);
 }
 
 /*
