@@ -12,6 +12,8 @@ to create state to have conditional rendering
 
 3. Finish up check functions by adding the logic for duplicates w/hashset which should
 be fairly simple (Done)
+
+4. Save to Game Local Storage
 */
 
 const Board = () => {
