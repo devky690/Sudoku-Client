@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Cell from "./Cell.js";
+import Cell from "./cell.js";
 import "../styles/square.css";
 
 const Square = () => {
