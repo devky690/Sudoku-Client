@@ -72,10 +72,9 @@ const Board = () => {
     //this is length > 0 so we dont call this function on initial render
     if(gameArray.length > 0){
       fillInExistingValues(cell, 0);
-      console.log("called here");
+      //we actually have something to save
+      localStorage.setItem("gameArray", JSON.stringify(gameArray));
     }
-    console.log(gameArray);
-    localStorage.setItem("gameArray", JSON.stringify(gameArray));
     console.log(gameArray);
   }, [gameArray]);
 
