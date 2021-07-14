@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import easyProbOne from '../gamesets/EasySudoku.js'
+import easyProbOne from "../gamesets/EasySudoku.js";
 import Square from "./square.js";
 import "../styles/board.css";
 
@@ -34,21 +34,19 @@ const Board = () => {
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
 
-
     checkSquares(cell, 0, false, false, false);
 
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
     let problemRowIndex = 0;
     rowStarts.forEach(start => {
-      
       fillInValues(cell, start, 0, 0, problemRowIndex);
       problemRowIndex++;
     });
-    const gameArr= JSON.parse(localStorage.getItem("gameArray"));
+    const gameArr = JSON.parse(localStorage.getItem("gameArray"));
     console.log(gameArr);
     //convert from json string to workable object/array(in this case)
-    if(gameArr!=null && gameArr.length > 0) setGameArray(JSON.parse(gameArr));
-    
+    if (gameArr != null && gameArr.length > 0) setGameArray(gameArr);
+
     rowStarts.forEach(start => {
       const seen = new Set();
       checkRows(cell, start, 0, seen);
@@ -62,15 +60,15 @@ const Board = () => {
     console.log(cell);
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const cell = document.querySelectorAll(".cell-input");
-    
+
     //need to fill in dom w/ our changes because this will cover
     //the case where we are retrieving from localstorage...cuz remember
-    //state updates asynchronously between renders 
+    //state updates asynchronously between renders
 
     //this is length > 0 so we dont call this function on initial render
-    if(gameArray.length > 0){
+    if (gameArray.length > 0) {
       fillInExistingValues(cell, 0);
       //we actually have something to save
       localStorage.setItem("gameArray", JSON.stringify(gameArray));
@@ -78,8 +76,7 @@ const Board = () => {
     console.log(gameArray);
   }, [gameArray]);
 
-
-function checkSquares(
+  function checkSquares(
     cell,
     index,
     checkedNum,
@@ -87,7 +84,7 @@ function checkSquares(
     hasSameElement
   ) {
     if (index === 81) return;
-  
+
     const seen = new Set();
     let position = cell[index];
     seen.add(position.value);
@@ -95,7 +92,11 @@ function checkSquares(
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
       position = position.nextElementSibling;
-      if (seen.has(position.value) && position.value !== "" && !hasSameElement) {
+      if (
+        seen.has(position.value) &&
+        position.value !== "" &&
+        !hasSameElement
+      ) {
         console.log("You have a duplicate element within a row");
         hasSameElement = true;
       }
@@ -111,16 +112,22 @@ function checkSquares(
       console.log(position);
       index++;
     }
-    checkSquares(cell, index + 1, checkedNum, checkedEmptySpace, hasSameElement);
+    checkSquares(
+      cell,
+      index + 1,
+      checkedNum,
+      checkedEmptySpace,
+      hasSameElement
+    );
   }
-  
+
   /*
     Goes across one column
   */
- let colSameElementStatus = false;
+  let colSameElementStatus = false;
   function checkColumns(cell, index, count, seen) {
     if (count == 9) return;
-  
+
     let position = cell[index];
     seen.add(position.value);
     console.log(position);
@@ -136,22 +143,22 @@ function checkSquares(
         console.log("You have a duplicate element within a column");
         colSameElementStatus = true;
       }
-    
+
       console.log(position);
       index += 3;
     }
     count += 3;
-  
+
     checkColumns(cell, index + 21, count, seen);
   }
-  
+
   /*
     Goes across one row
   */
   let rowSameElementStatus = false;
   function checkRows(cell, index, count, seen) {
     if (count == 9) return;
-  
+
     let position = cell[index];
     seen.add(position.value);
     console.log(position);
@@ -169,28 +176,33 @@ function checkSquares(
       index++;
     }
     count += 3;
-  
+
     checkRows(cell, index + 7, count, seen);
   }
-  
+
   /*
     Only fills in one row
   */
-   function fillInValues(cell, index, count, problemColumnIndex, problemRowIndex) {
+  function fillInValues(
+    cell,
+    index,
+    count,
+    problemColumnIndex,
+    problemRowIndex
+  ) {
     if (count == 9) return;
-  
+
     let position = cell[index];
     if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
       position.value = easyProbOne[problemRowIndex][problemColumnIndex];
       position.disabled = true;
-
     } else {
       position.disabled = false;
     }
     problemColumnIndex++;
     for (let i = 1; i <= 2; i++) {
       if (position) position = position.nextElementSibling;
-      
+
       if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
         position.value = easyProbOne[problemRowIndex][problemColumnIndex];
         position.disabled = true;
@@ -201,15 +213,15 @@ function checkSquares(
       console.log(position);
       index++;
     }
-  
+
     count += 3;
-  
+
     fillInValues(cell, index + 7, count, problemColumnIndex, problemRowIndex);
   }
 
-  function fillInExistingValues(cell, index){
-    if(index === 81) return ;
-  
+  function fillInExistingValues(cell, index) {
+    if (index === 81) return;
+
     let position = cell[index];
     position.value = gameArray[index];
 
@@ -222,24 +234,21 @@ function checkSquares(
       position.value = gameArray[index];
     }
     fillInExistingValues(cell, index + 1);
-  
   }
 
   return (
     <form className="board-grid">
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
-      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
+      <Square setGameArray={setGameArray}></Square>
     </form>
   );
 };
-
-
 
 export default Board;
