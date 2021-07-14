@@ -9,17 +9,28 @@ const Cell = ({setGameArray}) => {
       const cell = document.querySelectorAll(".cell-input");
       console.log(cell)
       const newGameArray = [];
-      //updateGameArray(cell, index, newGameArray);
+      updateGameArray(cell, 0, newGameArray);
+      setGameArray(newGameArray);
       console.log("inside ran");
   
     }
   }, [num])
 
-  // function updateGameArray(cell, index, newGameArray){
-  //     if(index === 81) return ;
+  function updateGameArray(cell, index, newGameArray){
+    if(index == 81) return ;
+    let position = cell[index];
+    newGameArray.push(position.value);
 
+    //add first element (its directly above) to seen here
+    for (let count = 2; count <= 9; count++) {
+      position = position.nextElementSibling;
+      index++;
+      newGameArray.push(position.value);
+    }
+    updateGameArray(cell, index + 1, newGameArray);
+  
 
-  // }
+  }
 
   return (
     <input
