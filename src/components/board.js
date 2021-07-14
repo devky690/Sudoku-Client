@@ -13,19 +13,7 @@ to create state to have conditional rendering
 3. Finish up check functions by adding the logic for duplicates w/hashset which should
 be fairly simple (Done)
 
-4. Save to Game Local Storage: 
-  1. Pass in state gameArray as prop to square then to cell
-  components by useContext or prop drilling then
-  define updateValues function which bases logic
-  from fillInValues function except adds logic by simply
-  using gameArray to update values of cell component
-  ...I need call updateValues function within useEffect
-  where that useEffect has num as a dependancy
-  
-  2. During this time be sure to set local storage
-  again with updated state...i will call update local
-  storage function within the same useEffect as above
-  step
+4. Save to Game Local Storage(DONE)
 */
 const Board = () => {
   const [gameArray, setGameArray] = useState([]);
