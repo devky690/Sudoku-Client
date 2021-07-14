@@ -33,7 +33,7 @@ const Board = () => {
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
-    console.clear();
+
 
     checkSquares(cell, 0, false, false, false);
 
@@ -44,6 +44,11 @@ const Board = () => {
       fillInValues(cell, start, 0, 0, problemRowIndex);
       problemRowIndex++;
     });
+    const gameArr= JSON.parse(localStorage.getItem("gameArray"));
+    console.log(gameArr);
+    //convert from json string to workable object/array(in this case)
+    if(gameArr!=null && gameArr.length > 0) setGameArray(JSON.parse(gameArr));
+    
     rowStarts.forEach(start => {
       const seen = new Set();
       checkRows(cell, start, 0, seen);
@@ -56,14 +61,20 @@ const Board = () => {
     });
     console.log(cell);
   }, []);
-  
-  useEffect(()=>{
-    const gameArrayJSON = localStorage.getItem("gameArray") || [];
-    //convert from json string to workable object/array(in this case)
-    setGameArray(JSON.parse(gameArrayJSON));
-  }, [])
 
   useEffect(()=>{
+    const cell = document.querySelectorAll(".cell-input");
+    
+    //need to fill in dom w/ our changes because this will cover
+    //the case where we are retrieving from localstorage...cuz remember
+    //state updates asynchronously between renders 
+
+    //this is length > 0 so we dont call this function on initial render
+    if(gameArray.length > 0){
+      fillInExistingValues(cell, 0);
+      console.log("called here");
+    }
+    console.log(gameArray);
     localStorage.setItem("gameArray", JSON.stringify(gameArray));
     console.log(gameArray);
   }, [gameArray]);
@@ -76,12 +87,11 @@ function checkSquares(
     checkedEmptySpace,
     hasSameElement
   ) {
-    if (index >= 80) return;
+    if (index === 81) return;
   
     const seen = new Set();
     let position = cell[index];
     seen.add(position.value);
-    
     console.log(position);
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
@@ -173,9 +183,6 @@ function checkSquares(
     let position = cell[index];
     if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
       position.value = easyProbOne[problemRowIndex][problemColumnIndex];
-      position.value = 2;
-      console.log('yolo');
-      console.log(position.value);
       position.disabled = true;
 
     } else {
@@ -184,7 +191,7 @@ function checkSquares(
     problemColumnIndex++;
     for (let i = 1; i <= 2; i++) {
       if (position) position = position.nextElementSibling;
-  
+      
       if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
         position.value = easyProbOne[problemRowIndex][problemColumnIndex];
         position.disabled = true;
@@ -201,17 +208,35 @@ function checkSquares(
     fillInValues(cell, index + 7, count, problemColumnIndex, problemRowIndex);
   }
 
+  function fillInExistingValues(cell, index){
+    if(index === 81) return ;
+  
+    let position = cell[index];
+    position.value = gameArray[index];
+
+    console.log(position);
+    //add first element (its directly above) to seen here
+    for (let count = 2; count <= 9; count++) {
+      position = position.nextElementSibling;
+      console.log(position);
+      index++;
+      position.value = gameArray[index];
+    }
+    fillInExistingValues(cell, index + 1);
+  
+  }
+
   return (
     <form className="board-grid">
-      <Square></Square>
-      <Square></Square>
-      <Square></Square>
-      <Square></Square>
-      <Square></Square>
-      <Square></Square>
-      <Square></Square>
-      <Square></Square>
-      <Square></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
+      <Square setGameArray = {setGameArray}></Square>
     </form>
   );
 };
