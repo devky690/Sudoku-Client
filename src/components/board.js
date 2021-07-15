@@ -21,7 +21,6 @@ const Board = () => {
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
-
     checkSquares(cell, 0, false, false, false);
 
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
@@ -31,7 +30,6 @@ const Board = () => {
       problemRowIndex++;
     });
     const gameArr = JSON.parse(localStorage.getItem("gameArray"));
-    console.log(gameArr);
     //convert from json string to workable object/array(in this case)
     if (gameArr != null && gameArr.length > 0) setGameArray(gameArr);
 
