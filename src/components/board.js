@@ -15,16 +15,16 @@ be fairly simple (Done)
 
 4. Save to Game Local Storage(DONE)
 */
-const Board = () => {
+const Board = ({showModal, setShowModal}) => {
   const [gameArray, setGameArray] = useState([]);
   useEffect(() => {
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
-    checkSquares(cell, 0, false, false, false, false);
 
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
     let problemRowIndex = 0;
+
     rowStarts.forEach(start => {
       fillInValues(cell, start, 0, 0, problemRowIndex);
       problemRowIndex++;
@@ -33,22 +33,11 @@ const Board = () => {
     //convert from json string to workable object/array(in this case)
     if (gameArr != null && gameArr.length > 0) setGameArray(gameArr);
 
-    rowStarts.forEach(start => {
-      const seen = new Set();
-      checkRows(cell, start, 0, seen);
-    });
-
-    const colStarts = [0, 1, 2, 9, 10, 11, 18, 19, 20];
-    colStarts.forEach(start => {
-      const seen = new Set();
-      checkColumns(cell, start, 0, seen);
-    });
-    
   }, []);
 
   useEffect(() => {
-    const cell = document.querySelectorAll(".cell-input");
 
+    const cell = document.querySelectorAll(".cell-input");
     //need to fill in dom w/ our changes because this will cover
     //the case where we are retrieving from localstorage...cuz remember
     //state updates asynchronously between renders
@@ -61,7 +50,28 @@ const Board = () => {
       localStorage.setItem("gameArray", JSON.stringify(gameArray));
     }
     console.log(gameArray);
-  }, [gameArray]);
+
+
+    //changing showModal would cause a rerender, so I believe I would need to add this
+    //as a dependancy as well so info isnt lost between renders
+  }, [gameArray, showModal]);
+
+  function validateSudoku(){
+    console.clear();
+    const cell = document.querySelectorAll(".cell-input");
+    checkSquares(cell, 0, false, false, false, false);
+    const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
+    rowStarts.forEach(start => {
+      const seen = new Set();
+      checkRows(cell, start, 0, seen);
+    });
+
+    const colStarts = [0, 1, 2, 9, 10, 11, 18, 19, 20];
+    colStarts.forEach(start => {
+      const seen = new Set();
+      checkColumns(cell, start, 0, seen);
+    });
+  }
 
   function checkSquares(
     cell,
@@ -75,8 +85,8 @@ const Board = () => {
 
     const seen = new Set();
     let position = cell[index];
-    seen.add(position.value);
 
+    seen.add(position.value);
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
       position = position.nextElementSibling;
@@ -85,20 +95,24 @@ const Board = () => {
         position.value !== "" &&
         !hasSameElement
       ) {
-        console.log("You have a duplicate element within a row");
+        console.log("You have a duplicate element within a square");
         hasSameElement = true;
+        setShowModal(true);
       }
       if (parseInt(position.value) === NaN && !checkedNum) {
         console.log("You have an element that isnt a number!");
         checkedNum = true;
+        setShowModal(true);
       }
       if (position.value === "" && !checkedEmptySpace) {
         console.log("You have an empty space!");
         checkedEmptySpace = true;
+        setShowModal(true);
       }
       if(parseInt(position.value)!==NaN && (parseInt(position.value) > 9 || parseInt(position.value) < 1 ) && !checkedRange){
         console.log("Number(s) is/are out of range!");
         checkedRange = true;
+        setShowModal(true);
       }
       seen.add(position.value);
   
@@ -122,6 +136,11 @@ const Board = () => {
     if (count == 9) return;
 
     let position = cell[index];
+    if(seen.has(position.value) && !colSameElementStatus && position.value !== ""){
+      console.log("You have a duplicate within a column");
+      colSameElementStatus = true;
+      setShowModal(true);
+    }
     seen.add(position.value);
 
     for (let i = 3; i <= 6; i += 3) {
@@ -135,10 +154,12 @@ const Board = () => {
       ) {
         console.log("You have a duplicate element within a column");
         colSameElementStatus = true;
+        setShowModal(true);
       }
 
   
       index += 3;
+      seen.add(position.value);
     }
     count += 3;
 
@@ -153,8 +174,13 @@ const Board = () => {
     if (count == 9) return;
 
     let position = cell[index];
+    if(seen.has(position.value) && !rowSameElementStatus && position.value !== "") {
+      console.log("You have a duplicate within a row");
+      rowSameElementStatus = true;
+      setShowModal(true);
+    }
     seen.add(position.value);
-
+    
     for (let i = 1; i <= 2; i++) {
       if (position) position = position.nextElementSibling;
       if (
@@ -164,12 +190,14 @@ const Board = () => {
       ) {
         console.log("You have a duplicate element within a row");
         rowSameElementStatus = true;
+        setShowModal(true);
       }
   
       index++;
+      seen.add(position.value);
+      
     }
     count += 3;
-
     checkRows(cell, index + 7, count, seen);
   }
 
@@ -230,17 +258,22 @@ const Board = () => {
   }
 
   return (
-    <form className="board-grid">
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-      <Square setGameArray={setGameArray}></Square>
-    </form>
+    <div>
+      <form className="board-grid">
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+        <Square setGameArray={setGameArray}></Square>
+      </form>
+      <button onClick={()=> {gameArray.length > 0 && validateSudoku()}}>Submit</button>
+    </div>
+ 
+    
   );
 };
 
