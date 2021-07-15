@@ -21,7 +21,7 @@ const Board = () => {
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
-    checkSquares(cell, 0, false, false, false);
+    checkSquares(cell, 0, false, false, false, false);
 
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
     let problemRowIndex = 0;
@@ -68,6 +68,7 @@ const Board = () => {
     index,
     checkedNum,
     checkedEmptySpace,
+    checkedRange,
     hasSameElement
   ) {
     if (index === 81) return;
@@ -87,13 +88,17 @@ const Board = () => {
         console.log("You have a duplicate element within a row");
         hasSameElement = true;
       }
-      if (parseInt(position) === NaN && !checkedNum) {
+      if (parseInt(position.value) === NaN && !checkedNum) {
         console.log("You have an element that isnt a number!");
         checkedNum = true;
       }
       if (position.value === "" && !checkedEmptySpace) {
         console.log("You have an empty space!");
         checkedEmptySpace = true;
+      }
+      if(parseInt(position.value)!==NaN && (parseInt(position.value) > 9 || parseInt(position.value) < 1 ) && !checkedRange){
+        console.log("Number(s) is/are out of range!");
+        checkedRange = true;
       }
       seen.add(position.value);
   
@@ -104,6 +109,7 @@ const Board = () => {
       index + 1,
       checkedNum,
       checkedEmptySpace,
+      checkedRange,
       hasSameElement
     );
   }
