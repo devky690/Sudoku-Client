@@ -54,6 +54,7 @@ const Board = () => {
     //state updates asynchronously between renders
 
     //this is length > 0 so we dont call this function on initial render
+    //we dont want to set board to undefined!
     if (gameArray.length > 0) {
       fillInExistingValues(cell, 0);
       //we actually have something to save

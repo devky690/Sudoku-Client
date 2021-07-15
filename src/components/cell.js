@@ -5,6 +5,9 @@ const Cell = ({setGameArray}) => {
   const [num, setNum] = useState("");
   useEffect(()=>{
     //!=== " " so we dont run on initial render
+    //we dont want to set board to empty strings on initial render! that would
+    //mean our sudoku board would never be generated with the required initial
+    //values
     if(num !== "") {
       const cell = document.querySelectorAll(".cell-input");
       console.log(cell)
