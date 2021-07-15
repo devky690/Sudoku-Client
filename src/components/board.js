@@ -87,6 +87,22 @@ const Board = ({showModal, setShowModal}) => {
     let position = cell[index];
 
     seen.add(position.value);
+
+    if (isNaN(position.value) && !checkedNum) {
+      console.log("You have an element that isnt a number!");
+      checkedNum = true;
+      setShowModal(true);
+    }
+    if (position.value === "" && !checkedEmptySpace) {
+      console.log("You have an empty space!");
+      checkedEmptySpace = true;
+      setShowModal(true);
+    }
+    if(!isNaN(position.value) && (parseInt(position.value) > 9 || parseInt(position.value) < 1 ) && !checkedRange){
+      console.log("Number(s) is/are out of range!");
+      checkedRange = true;
+      setShowModal(true);
+    }
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
       position = position.nextElementSibling;
@@ -99,7 +115,7 @@ const Board = ({showModal, setShowModal}) => {
         hasSameElement = true;
         setShowModal(true);
       }
-      if (parseInt(position.value) === NaN && !checkedNum) {
+      if (isNaN(position.value) && !checkedNum) {
         console.log("You have an element that isnt a number!");
         checkedNum = true;
         setShowModal(true);
@@ -109,7 +125,7 @@ const Board = ({showModal, setShowModal}) => {
         checkedEmptySpace = true;
         setShowModal(true);
       }
-      if(parseInt(position.value)!==NaN && (parseInt(position.value) > 9 || parseInt(position.value) < 1 ) && !checkedRange){
+      if(!isNaN(position.value) && (parseInt(position.value) > 9 || parseInt(position.value) < 1 ) && !checkedRange){
         console.log("Number(s) is/are out of range!");
         checkedRange = true;
         setShowModal(true);
