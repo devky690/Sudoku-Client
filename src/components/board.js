@@ -45,7 +45,7 @@ const Board = () => {
       const seen = new Set();
       checkColumns(cell, start, 0, seen);
     });
-    console.log(cell);
+    
   }, []);
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const Board = () => {
     const seen = new Set();
     let position = cell[index];
     seen.add(position.value);
-    console.log(position);
+
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
       position = position.nextElementSibling;
@@ -97,7 +97,7 @@ const Board = () => {
         checkedEmptySpace = true;
       }
       seen.add(position.value);
-      console.log(position);
+  
       index++;
     }
     checkSquares(
@@ -118,7 +118,7 @@ const Board = () => {
 
     let position = cell[index];
     seen.add(position.value);
-    console.log(position);
+
     for (let i = 3; i <= 6; i += 3) {
       if (position && position.nextElementSibling)
         position =
@@ -132,7 +132,7 @@ const Board = () => {
         colSameElementStatus = true;
       }
 
-      console.log(position);
+  
       index += 3;
     }
     count += 3;
@@ -149,7 +149,7 @@ const Board = () => {
 
     let position = cell[index];
     seen.add(position.value);
-    console.log(position);
+
     for (let i = 1; i <= 2; i++) {
       if (position) position = position.nextElementSibling;
       if (
@@ -160,7 +160,7 @@ const Board = () => {
         console.log("You have a duplicate element within a row");
         rowSameElementStatus = true;
       }
-      console.log(position);
+  
       index++;
     }
     count += 3;
@@ -198,7 +198,7 @@ const Board = () => {
         position.disabled = false;
       }
       problemColumnIndex++;
-      console.log(position);
+  
       index++;
     }
 
@@ -213,11 +213,11 @@ const Board = () => {
     let position = cell[index];
     position.value = gameArray[index];
 
-    console.log(position);
+
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
       position = position.nextElementSibling;
-      console.log(position);
+  
       index++;
       position.value = gameArray[index];
     }
