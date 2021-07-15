@@ -10,4 +10,8 @@ const easyProbOne = [
   ["", 9, "", "", 5, 6, 3, 7, ""],
 ];
 
+const easyCollection = [easyProbOne];
+
+const randomEasyProb = Math.floor(Math.random() * easyCollection.length);
+
 export default easyProbOne;
