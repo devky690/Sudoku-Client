@@ -1,13 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Board from "./components/board.js";
-import Modal from './components/modal.js';
+import Modal from "./components/modal.js";
 
 function App() {
-  const [showModal, setShowModal] = useState(false);
   return (
     <div className="App">
-      <Board showModal = {showModal} setShowModal={setShowModal}> </Board>
-      {showModal && <Modal> </Modal>}
+      <Board> </Board>
+      <div></div>
+      <h2>Game Status</h2>
+      <Modal> </Modal>
     </div>
   );
 }

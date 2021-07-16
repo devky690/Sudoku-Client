@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from "react";
 import "../styles/cell.css";
 
-const Cell = ({setGameArray}) => {
+const Cell = ({ setGameArray }) => {
   const [num, setNum] = useState("");
-  useEffect(()=>{
+  useEffect(() => {
     //!=== " " so we dont run on initial render
     //we dont want to set board to empty strings on initial render! that would
     //mean our sudoku board would never be generated with the required initial
     //values
-    if(num !== "") {
+    if (num !== "") {
       const cell = document.querySelectorAll(".cell-input");
-      console.log(cell)
       const newGameArray = [];
       updateGameArray(cell, 0, newGameArray);
       setGameArray(newGameArray);
-      console.log("inside ran");
-  
     }
-  }, [num])
+  }, [num]);
 
-  function updateGameArray(cell, index, newGameArray){
-    if(index == 81) return ;
+  function updateGameArray(cell, index, newGameArray) {
+    if (index == 81) return;
     let position = cell[index];
     newGameArray.push(position.value);
 
@@ -31,8 +28,6 @@ const Cell = ({setGameArray}) => {
       newGameArray.push(position.value);
     }
     updateGameArray(cell, index + 1, newGameArray);
-  
-
   }
 
   return (

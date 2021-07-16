@@ -15,7 +15,7 @@ be fairly simple (Done)
 
 4. Save to Game Local Storage(DONE)
 */
-const Board = ({showModal, setShowModal}) => {
+const Board = ({ showModal, setShowModal }) => {
   const [gameArray, setGameArray] = useState([]);
   useEffect(() => {
     //need to mess around with this to figure out the validation for sudoku
@@ -32,11 +32,9 @@ const Board = ({showModal, setShowModal}) => {
     const gameArr = JSON.parse(localStorage.getItem("gameArray"));
     //convert from json string to workable object/array(in this case)
     if (gameArr != null && gameArr.length > 0) setGameArray(gameArr);
-
   }, []);
 
   useEffect(() => {
-
     const cell = document.querySelectorAll(".cell-input");
     //need to fill in dom w/ our changes because this will cover
     //the case where we are retrieving from localstorage...cuz remember
@@ -51,26 +49,32 @@ const Board = ({showModal, setShowModal}) => {
     }
     console.log(gameArray);
 
-
     //changing showModal would cause a rerender, so I believe I would need to add this
     //as a dependancy as well so info isnt lost between renders
-  }, [gameArray, showModal]);
+    //this would be if we had a popup showModal
+  }, [gameArray]);
 
-  function validateSudoku(){
+  function validateSudoku() {
     console.clear();
     const cell = document.querySelectorAll(".cell-input");
-    checkSquares(cell, 0, false, false, false, false);
+    const modal = document.querySelector(".modal-container");
+    modal.innerHTML = "";
+    console.log(modal);
+    checkSquares(cell, 0, false, false, false, false, modal);
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
     rowStarts.forEach(start => {
       const seen = new Set();
-      checkRows(cell, start, 0, seen);
+      checkRows(cell, start, 0, seen, modal);
     });
 
     const colStarts = [0, 1, 2, 9, 10, 11, 18, 19, 20];
     colStarts.forEach(start => {
       const seen = new Set();
-      checkColumns(cell, start, 0, seen);
+      checkColumns(cell, start, 0, seen, modal);
     });
+    if (modal.innerHTML === "") {
+      updateGameStatus(modal, "You WON");
+    }
   }
 
   function checkSquares(
@@ -79,7 +83,8 @@ const Board = ({showModal, setShowModal}) => {
     checkedNum,
     checkedEmptySpace,
     checkedRange,
-    hasSameElement
+    hasSameElement,
+    modal
   ) {
     if (index === 81) return;
 
@@ -90,18 +95,22 @@ const Board = ({showModal, setShowModal}) => {
 
     if (isNaN(position.value) && !checkedNum) {
       console.log("You have an element that isnt a number!");
+      updateGameStatus(modal, "You have an element that isnt a number!");
       checkedNum = true;
-      setShowModal(true);
     }
     if (position.value === "" && !checkedEmptySpace) {
       console.log("You have an empty space!");
+      updateGameStatus(modal, "You have an empty space!");
       checkedEmptySpace = true;
-      setShowModal(true);
     }
-    if(!isNaN(position.value) && (parseInt(position.value) > 9 || parseInt(position.value) < 1 ) && !checkedRange){
+    if (
+      !isNaN(position.value) &&
+      (parseInt(position.value) > 9 || parseInt(position.value) < 1) &&
+      !checkedRange
+    ) {
       console.log("Number(s) is/are out of range!");
+      updateGameStatus(modal, "Number(s) is/are out of range!");
       checkedRange = true;
-      setShowModal(true);
     }
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
@@ -112,26 +121,30 @@ const Board = ({showModal, setShowModal}) => {
         !hasSameElement
       ) {
         console.log("You have a duplicate element within a square");
+        updateGameStatus(modal, "You have a duplicate element within a square");
         hasSameElement = true;
-        setShowModal(true);
       }
       if (isNaN(position.value) && !checkedNum) {
         console.log("You have an element that isnt a number!");
+        updateGameStatus(modal, "You have an element that isnt a number!");
         checkedNum = true;
-        setShowModal(true);
       }
       if (position.value === "" && !checkedEmptySpace) {
         console.log("You have an empty space!");
+        updateGameStatus(modal, "You have an empty space!");
         checkedEmptySpace = true;
-        setShowModal(true);
       }
-      if(!isNaN(position.value) && (parseInt(position.value) > 9 || parseInt(position.value) < 1 ) && !checkedRange){
+      if (
+        !isNaN(position.value) &&
+        (parseInt(position.value) > 9 || parseInt(position.value) < 1) &&
+        !checkedRange
+      ) {
         console.log("Number(s) is/are out of range!");
+        updateGameStatus(modal, "Number(s) is/are out of range!");
         checkedRange = true;
-        setShowModal(true);
       }
       seen.add(position.value);
-  
+
       index++;
     }
     checkSquares(
@@ -140,7 +153,8 @@ const Board = ({showModal, setShowModal}) => {
       checkedNum,
       checkedEmptySpace,
       checkedRange,
-      hasSameElement
+      hasSameElement,
+      modal
     );
   }
 
@@ -148,14 +162,18 @@ const Board = ({showModal, setShowModal}) => {
     Goes across one column
   */
   let colSameElementStatus = false;
-  function checkColumns(cell, index, count, seen) {
+  function checkColumns(cell, index, count, seen, modal) {
     if (count == 9) return;
 
     let position = cell[index];
-    if(seen.has(position.value) && !colSameElementStatus && position.value !== ""){
+    if (
+      seen.has(position.value) &&
+      !colSameElementStatus &&
+      position.value !== ""
+    ) {
       console.log("You have a duplicate within a column");
       colSameElementStatus = true;
-      setShowModal(true);
+      updateGameStatus(modal, "You have a duplicate within a column");
     }
     seen.add(position.value);
 
@@ -169,34 +187,37 @@ const Board = ({showModal, setShowModal}) => {
         position.value !== ""
       ) {
         console.log("You have a duplicate element within a column");
+        updateGameStatus(modal, "You have a duplicate within a column");
         colSameElementStatus = true;
-        setShowModal(true);
       }
 
-  
       index += 3;
       seen.add(position.value);
     }
     count += 3;
 
-    checkColumns(cell, index + 21, count, seen);
+    checkColumns(cell, index + 21, count, seen, modal);
   }
 
   /*
     Goes across one row
   */
   let rowSameElementStatus = false;
-  function checkRows(cell, index, count, seen) {
+  function checkRows(cell, index, count, seen, modal) {
     if (count == 9) return;
 
     let position = cell[index];
-    if(seen.has(position.value) && !rowSameElementStatus && position.value !== "") {
+    if (
+      seen.has(position.value) &&
+      !rowSameElementStatus &&
+      position.value !== ""
+    ) {
       console.log("You have a duplicate within a row");
+      updateGameStatus(modal, "You have a duplicate within a row");
       rowSameElementStatus = true;
-      setShowModal(true);
     }
     seen.add(position.value);
-    
+
     for (let i = 1; i <= 2; i++) {
       if (position) position = position.nextElementSibling;
       if (
@@ -205,16 +226,15 @@ const Board = ({showModal, setShowModal}) => {
         !rowSameElementStatus
       ) {
         console.log("You have a duplicate element within a row");
+        updateGameStatus(modal, "You have a duplicate within a row");
         rowSameElementStatus = true;
-        setShowModal(true);
       }
-  
+
       index++;
       seen.add(position.value);
-      
     }
     count += 3;
-    checkRows(cell, index + 7, count, seen);
+    checkRows(cell, index + 7, count, seen, modal);
   }
 
   /*
@@ -247,7 +267,7 @@ const Board = ({showModal, setShowModal}) => {
         position.disabled = false;
       }
       problemColumnIndex++;
-  
+
       index++;
     }
 
@@ -262,15 +282,20 @@ const Board = ({showModal, setShowModal}) => {
     let position = cell[index];
     position.value = gameArray[index];
 
-
     //add first element (its directly above) to seen here
     for (let count = 2; count <= 9; count++) {
       position = position.nextElementSibling;
-  
+
       index++;
       position.value = gameArray[index];
     }
     fillInExistingValues(cell, index + 1);
+  }
+
+  function updateGameStatus(modal, message) {
+    const gameMSG = document.createElement("div");
+    gameMSG.innerText = message;
+    modal.appendChild(gameMSG);
   }
 
   return (
@@ -286,10 +311,14 @@ const Board = ({showModal, setShowModal}) => {
         <Square setGameArray={setGameArray}></Square>
         <Square setGameArray={setGameArray}></Square>
       </form>
-      <button onClick={()=> {gameArray.length > 0 && validateSudoku()}}>Submit</button>
+      <button
+        onClick={() => {
+          gameArray.length > 0 && validateSudoku();
+        }}
+      >
+        Submit
+      </button>
     </div>
- 
-    
   );
 };
 
