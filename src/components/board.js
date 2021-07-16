@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import easyProbOne from "../gamesets/EasySudoku.js";
+import easyCollection from "../gamesets/EasySudoku.js";
 import Square from "./square.js";
 import "../styles/board.css";
 
@@ -15,9 +15,14 @@ be fairly simple (Done)
 
 4. Save to Game Local Storage(DONE)
 */
-const Board = ({ showModal, setShowModal }) => {
+
+const Board = () => {
   const [gameArray, setGameArray] = useState([]);
+  const [hasNewGame, setHasNewGame] = useState(false);
+  //using let because we will switch between array references
+  let randomEasyProb = easyCollection[Math.floor(Math.random() * easyCollection.length)];
   useEffect(() => {
+
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
@@ -32,10 +37,26 @@ const Board = ({ showModal, setShowModal }) => {
     const gameArr = JSON.parse(localStorage.getItem("gameArray"));
     //convert from json string to workable object/array(in this case)
     if (gameArr != null && gameArr.length > 0) setGameArray(gameArr);
+    //[] - renders only once when component loads and thats it
   }, []);
 
   useEffect(() => {
     const cell = document.querySelectorAll(".cell-input");
+
+    if(hasNewGame){
+      if(localStorage.getItem("gameArray")){
+        localStorage.removeItem("gameArray");
+      }
+      randomEasyProb = easyCollection[Math.floor(Math.random() * easyCollection.length)];
+      const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
+      let problemRowIndex = 0;
+  
+      rowStarts.forEach(start => {
+        fillInValues(cell, start, 0, 0, problemRowIndex);
+        problemRowIndex++;
+      });
+    }
+    
     //need to fill in dom w/ our changes because this will cover
     //the case where we are retrieving from localstorage...cuz remember
     //state updates asynchronously between renders
@@ -46,16 +67,21 @@ const Board = ({ showModal, setShowModal }) => {
       fillInExistingValues(cell, 0);
       //we actually have something to save
       localStorage.setItem("gameArray", JSON.stringify(gameArray));
+      setHasNewGame(false);
     }
     console.log(gameArray);
 
-    //changing showModal would cause a rerender, so I believe I would need to add this
+    //changing hasNewGame would cause a rerender, so I believe I would need to add this
     //as a dependancy as well so info isnt lost between renders
-    //this would be if we had a popup showModal
-  }, [gameArray]);
+  }, [gameArray, hasNewGame]);
+
+  function getNewGame(){
+
+    setGameArray([]);
+    setHasNewGame(true);
+  }
 
   function validateSudoku() {
-    console.clear();
     const cell = document.querySelectorAll(".cell-input");
     const modal = document.querySelector(".modal-container");
     modal.innerHTML = "";
@@ -250,20 +276,22 @@ const Board = ({ showModal, setShowModal }) => {
     if (count == 9) return;
 
     let position = cell[index];
-    if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
-      position.value = easyProbOne[problemRowIndex][problemColumnIndex];
+    if (randomEasyProb[problemRowIndex][problemColumnIndex] !== "") {
+      position.value = randomEasyProb[problemRowIndex][problemColumnIndex];
       position.disabled = true;
     } else {
+      position.value = "";
       position.disabled = false;
     }
     problemColumnIndex++;
     for (let i = 1; i <= 2; i++) {
       if (position) position = position.nextElementSibling;
 
-      if (easyProbOne[problemRowIndex][problemColumnIndex] !== "") {
-        position.value = easyProbOne[problemRowIndex][problemColumnIndex];
+      if (randomEasyProb[problemRowIndex][problemColumnIndex] !== "") {
+        position.value = randomEasyProb[problemRowIndex][problemColumnIndex];
         position.disabled = true;
       } else {
+        position.value = "";
         position.disabled = false;
       }
       problemColumnIndex++;
@@ -317,6 +345,13 @@ const Board = ({ showModal, setShowModal }) => {
         }}
       >
         Submit
+      </button>
+      <button
+        onClick={() => {
+          getNewGame();
+        }}
+      >
+        New Game
       </button>
     </div>
   );
