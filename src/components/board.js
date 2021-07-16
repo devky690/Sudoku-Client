@@ -67,6 +67,12 @@ const Board = () => {
       fillInExistingValues(cell, 0);
       //we actually have something to save
       localStorage.setItem("gameArray", JSON.stringify(gameArray));
+      //technically this is late because state updates on next render
+      //HOWEVER, when we changed num we saved our game array then, 
+      //so this conditional block would overwrite changes from the above
+      //conditional block...so we would have no issues
+      //but this overwrite would only occur on the first time gameArray.length > 0
+      //for THAT particular game session
       setHasNewGame(false);
     }
     console.log(gameArray);
