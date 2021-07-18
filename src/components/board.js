@@ -19,7 +19,7 @@ be fairly simple (Done)
 const Board = () => {
   const [gameArray, setGameArray] = useState([]);
   const [hasNewGame, setHasNewGame] = useState(false);
-  //using let because we will switch between array references
+  //dont want to loose our randomEasyProb between renders so making it be state
   const [randomEasyProb, setRandomEasyProb] = useState(
     easyCollection[Math.floor(Math.random() * easyCollection.length)]
   );
