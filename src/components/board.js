@@ -30,10 +30,14 @@ const Board = () => {
     const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
     let problemRowIndex = 0;
 
-    rowStarts.forEach(start => {
-      fillInValues(cell, start, 0, 0, problemRowIndex);
-      problemRowIndex++;
-    });
+    //so we dont ruin our disabled elements
+    if (JSON.parse(localStorage.getItem("gameArray")) == null) {
+      rowStarts.forEach(start => {
+        fillInValues(cell, start, 0, 0, problemRowIndex);
+        problemRowIndex++;
+      });
+    }
+
     const gameArr = JSON.parse(localStorage.getItem("gameArray"));
     //convert from json string to workable object/array(in this case)
     if (gameArr != null && gameArr.length > 0) setGameArray(gameArr);
@@ -65,9 +69,26 @@ const Board = () => {
     //this is length > 0 so we dont call this function on initial render
     //we dont want to set board to undefined!
     if (gameArray.length > 0) {
-      fillInExistingValues(cell, 0);
       //we actually have something to save
       localStorage.setItem("gameArray", JSON.stringify(gameArray));
+
+      //must've made first move so set key to randomEasyProb
+      if (localStorage.getItem("original_prob") == null) {
+        localStorage.setItem("original_prob", JSON.stringify(randomEasyProb));
+      }
+      if (localStorage.getItem("original_prob") != null) {
+        const randEasyProb = JSON.parse(localStorage.getItem("original_prob"));
+        const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
+        let problemRowIndex = 0;
+
+        rowStarts.forEach(start => {
+          setDisabledInputs(cell, start, 0, 0, problemRowIndex, randEasyProb);
+          problemRowIndex++;
+        });
+      }
+
+      fillInExistingValues(cell, 0);
+
       //technically this is late because state updates on next render
       //HOWEVER, when we changed num we saved our game array then,
       //so this conditional block would overwrite changes from the above
@@ -82,8 +103,53 @@ const Board = () => {
     //as a dependancy as well so info isnt lost between renders
   }, [gameArray, hasNewGame]);
 
+  function setDisabledInputs(
+    cell,
+    index,
+    count,
+    problemColumnIndex,
+    problemRowIndex,
+    randEasyProb
+  ) {
+    if (count == 9) return;
+
+    let position = cell[index];
+    if (randEasyProb[problemRowIndex][problemColumnIndex] !== "") {
+      position.disabled = true;
+    } else {
+      position.disabled = false;
+    }
+    problemColumnIndex++;
+    for (let i = 1; i <= 2; i++) {
+      if (position) position = position.nextElementSibling;
+
+      if (randEasyProb[problemRowIndex][problemColumnIndex] !== "") {
+        position.disabled = true;
+      } else {
+        position.disabled = false;
+      }
+      problemColumnIndex++;
+
+      index++;
+    }
+
+    count += 3;
+
+    setDisabledInputs(
+      cell,
+      index + 7,
+      count,
+      problemColumnIndex,
+      problemRowIndex,
+      randEasyProb
+    );
+  }
+
   function getNewGame() {
     setGameArray([]);
+    if (localStorage.getItem("original_prob") != null) {
+      localStorage.removeItem("original_prob");
+    }
     setHasNewGame(true);
   }
 
