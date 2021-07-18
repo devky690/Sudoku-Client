@@ -1,9 +1,7 @@
-.modal-container{
-    margin-top: 100px;
-    margin-left: 150px;
-    border: 1px solid black;
-    width: 50vw;
-    height: 50vh;
-    background-color: orange;
-    border-radius: 5px;
+.modal-container {
+  border: 1px solid black;
+  width: 50vw;
+  height: 40vh;
+  background-color: orange;
+  border-radius: 5px;
 }

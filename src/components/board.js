@@ -20,9 +20,9 @@ const Board = () => {
   const [gameArray, setGameArray] = useState([]);
   const [hasNewGame, setHasNewGame] = useState(false);
   //using let because we will switch between array references
-  let randomEasyProb = easyCollection[Math.floor(Math.random() * easyCollection.length)];
+  let randomEasyProb =
+    easyCollection[Math.floor(Math.random() * easyCollection.length)];
   useEffect(() => {
-
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
     const cell = document.querySelectorAll(".cell-input");
@@ -43,20 +43,21 @@ const Board = () => {
   useEffect(() => {
     const cell = document.querySelectorAll(".cell-input");
 
-    if(hasNewGame){
-      if(localStorage.getItem("gameArray")){
+    if (hasNewGame) {
+      if (localStorage.getItem("gameArray")) {
         localStorage.removeItem("gameArray");
       }
-      randomEasyProb = easyCollection[Math.floor(Math.random() * easyCollection.length)];
+      randomEasyProb =
+        easyCollection[Math.floor(Math.random() * easyCollection.length)];
       const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
       let problemRowIndex = 0;
-  
+
       rowStarts.forEach(start => {
         fillInValues(cell, start, 0, 0, problemRowIndex);
         problemRowIndex++;
       });
     }
-    
+
     //need to fill in dom w/ our changes because this will cover
     //the case where we are retrieving from localstorage...cuz remember
     //state updates asynchronously between renders
@@ -68,7 +69,7 @@ const Board = () => {
       //we actually have something to save
       localStorage.setItem("gameArray", JSON.stringify(gameArray));
       //technically this is late because state updates on next render
-      //HOWEVER, when we changed num we saved our game array then, 
+      //HOWEVER, when we changed num we saved our game array then,
       //so this conditional block would overwrite changes from the above
       //conditional block...so we would have no issues
       //but this overwrite would only occur on the first time gameArray.length > 0
@@ -81,8 +82,7 @@ const Board = () => {
     //as a dependancy as well so info isnt lost between renders
   }, [gameArray, hasNewGame]);
 
-  function getNewGame(){
-
+  function getNewGame() {
     setGameArray([]);
     setHasNewGame(true);
   }
@@ -346,6 +346,7 @@ const Board = () => {
         <Square setGameArray={setGameArray}></Square>
       </form>
       <button
+        className="btn"
         onClick={() => {
           gameArray.length > 0 && validateSudoku();
         }}
@@ -353,6 +354,7 @@ const Board = () => {
         Submit
       </button>
       <button
+        className="btn"
         onClick={() => {
           getNewGame();
         }}
