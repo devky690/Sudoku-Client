@@ -20,8 +20,9 @@ const Board = () => {
   const [gameArray, setGameArray] = useState([]);
   const [hasNewGame, setHasNewGame] = useState(false);
   //using let because we will switch between array references
-  let randomEasyProb =
-    easyCollection[Math.floor(Math.random() * easyCollection.length)];
+  const [randomEasyProb, setRandomEasyProb] = useState(
+    easyCollection[Math.floor(Math.random() * easyCollection.length)]
+  );
   useEffect(() => {
     //need to mess around with this to figure out the validation for sudoku
     //then after that, comes the random generator for the sudoku
@@ -51,8 +52,6 @@ const Board = () => {
       if (localStorage.getItem("gameArray")) {
         localStorage.removeItem("gameArray");
       }
-      randomEasyProb =
-        easyCollection[Math.floor(Math.random() * easyCollection.length)];
       const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
       let problemRowIndex = 0;
 
@@ -80,6 +79,7 @@ const Board = () => {
         const randEasyProb = JSON.parse(localStorage.getItem("original_prob"));
         const rowStarts = [0, 3, 6, 27, 30, 33, 54, 57, 60];
         let problemRowIndex = 0;
+        console.log(randEasyProb);
 
         rowStarts.forEach(start => {
           setDisabledInputs(cell, start, 0, 0, problemRowIndex, randEasyProb);
@@ -101,7 +101,7 @@ const Board = () => {
 
     //changing hasNewGame would cause a rerender, so I believe I would need to add this
     //as a dependancy as well so info isnt lost between renders
-  }, [gameArray, hasNewGame]);
+  }, [gameArray, hasNewGame, randomEasyProb]);
 
   function setDisabledInputs(
     cell,
@@ -147,6 +147,9 @@ const Board = () => {
 
   function getNewGame() {
     setGameArray([]);
+    setRandomEasyProb(
+      easyCollection[Math.floor(Math.random() * easyCollection.length)]
+    );
     if (localStorage.getItem("original_prob") != null) {
       localStorage.removeItem("original_prob");
     }
